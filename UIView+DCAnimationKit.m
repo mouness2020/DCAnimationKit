@@ -267,7 +267,7 @@ CGFloat degreesToRadians(CGFloat degrees)
 //////////////////////////////////////////////////////////////////////////////////////
 -(void)tada:(DCAnimationFinished)finished
 {
-    float dist = 3;
+    float dist = 8;
     float dur = 0.12;
     [UIView animateWithDuration:dur animations:^{
         CGAffineTransform rotationTransform = CGAffineTransformMakeScale(0.95, 0.95);
@@ -285,13 +285,22 @@ CGFloat degreesToRadians(CGFloat degrees)
                 [weakSelf moveRotation:-dist*2 duration:dur finished:^{
                     [weakSelf moveRotation:dist*2 duration:dur finished:^{
                         [weakSelf moveRotation:-dist*2 duration:dur finished:^{
-                            [UIView animateWithDuration:dur animations:^{
-                                CGAffineTransform rotationTransform = CGAffineTransformMakeScale(1, 1);
-                                rotationTransform = CGAffineTransformRotate(rotationTransform, degreesToRadians(0));
-                                self.transform = rotationTransform;
-                            } completion:^(BOOL f){
-                                if(finished)
-                                    finished();
+                            [weakSelf moveRotation:dist*2 duration:dur finished:^{
+                                [weakSelf moveRotation:-dist*2 duration:dur finished:^{
+                                    [weakSelf moveRotation:dist*2 duration:dur finished:^{
+                                        [weakSelf moveRotation:-dist*2 duration:dur finished:^{
+                                            
+                                            [UIView animateWithDuration:dur animations:^{
+                                                CGAffineTransform rotationTransform = CGAffineTransformMakeScale(1, 1);
+                                                rotationTransform = CGAffineTransformRotate(rotationTransform, degreesToRadians(0));
+                                                self.transform = rotationTransform;
+                                            } completion:^(BOOL f){
+                                                if(finished)
+                                                    finished();
+                                            }];
+                                        }];
+                                    }];
+                                }];
                             }];
                         }];
                     }];
